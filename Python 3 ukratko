@@ -1,0 +1,640 @@
+#Python 3 ukratko
+#****************
+''' Ovaj program sadrži kratki podsjetnik na gradivo obrađeno kroz predavanja i vježbe
+kolegija "Osnove programiranja" na stručnom studiju informatike TVZ-a, ne nužno
+redoslijedom kojim su teme obrađivane.\\
+
+Autor: Bojan Nožica, dipl.ing., v.pred.
+siječanj 2018., Zagreb'''
+
+#Osnovni tipovi podataka
+#***********************
+
+'int - cjelobrojni tip podatka'
+cijeli_broj = 123456789012345678901234567890; 'bez ograničenja broja znamenki'
+binarni_cijeli_broj = 0b01101; 's prefiksom 0b'
+oktalni = 0o753; 's prefiksom "0o" '
+'točka-zarez u naredbama omogućuje pisanje više naredbi u istom retku:'
+hexadecimalni = 0xAF12; negativni = -123; nula = 0
+
+'float - brojevi s pomičnom točkom'
+x = 2.5
+y = 1.0; z = -2.
+znanstveno1 = 2.38e6
+znanstveno2 = 3.333333333333333e-20
+'''brojevi se zapisuju u tzv. dvostrukoj preciznosti koja omogućuje 15-16 značajnih
+znamenki decimalnog dijela broja'''
+
+'bool - logički tip podatka'
+istina = True
+laz = False
+
+'string - znakovni tip podatka'
+poruka = 'ovo je tzv. "string" - znakovni tip podatka i ujedno niz znakova'
+specijalni_znakovi = "1.red\n2.red \', \“, \\, \t - tzv. escape sequence."
+
+'''za pohranu znakova koristi se u Pythonu kodni sustav Unicode (inačica UTF-8)
+kojim se pojedini znak zapisuje s jednim do čak 6 bytova, čime je moguće kodirati
+preko milijun različitih znakova svjetskih pisama.
+Trostruki navodni znak (koji može biti jednostruki ili dvostruki) koristi se kao
+dokumentacijski string koji se proteže u više redaka'''
+
+#Imenovanje varijabli, funkcija, modula...
+#*****************************************
+'''započinje malim ili velikim slovom abecede, naši znakovi dozvoljeni su
+ali ih je preporučljivo izbjegavati, iza slova mogu uslijediti znamenke.
+Osjetljivost na veličinu slova - a1 i A1 su različita imena. Uobičajeno
+je započeti imena malim slovom ili podvlakom _, kod sastavljenih imena
+koristiti podvlaku ili započeti novu riječ velikim slovom:
+
+stil_prvi
+stilDrugi
+
+Zabranjeno je koristiti imena koja se u Pythonu koriste kao rezervirane riječi,
+npr. "for", "and", "in", ili kao imena ugrađenih funkcija poput "print", "range"
+"hex" i slično. Također, imena koja započinju s dvije podvlake rezervirana su za
+interne potrebe Pythona i treba ih izbjegavati.'''
+
+#Pridruživanje vrijednosti i promjena tipa podatka
+#*************************************************
+'''izvršava se uporabom operatora "=". U Pythonu kažemo da varijabla nakon
+pridruživanja pokazuje na neku vrijednost, npr. nakon:'''
+a = 1
+'''kažemo da varijabla a pozuje na vrijednost 1. Ujedno je gornje pridruživanje
+implicitno odredilo i tip varijable a (cjelobrojna varijabla). Moguće je
+varijabli promijeniti tip, pa će nakon'''
+a = 0.5
+' varijabla a biti tipa float, a nakon'
+a = "********"
+'''očito će biti tipa string (no to zasigurno neće doprinijeti razumljivosti
+programa). Osim implicitnog određivanja tipa, moguće je varijabli eksplicitno
+odrediti tip pomoću neke od funkcija int(), float(), str() ili bool(). Npr:'''
+b = bool(5)
+'''pridružit će varijabli b vrijednost "True", jer sve što nije 0 razvija se u
+Pythonu kao istina, kada se pretvori u logički tip podatka. Ako dalje napišemo'''
+
+c = float(b)
+''' c će pokazivati na vrijednost 1.0, što je float reprezentacija od True. Pri
+tome je funcija float() samo privremeno izračunala vrijednost i odredila tip
+podatka pridružen varijabli c, dok je sadržaj varijable b i dalje ostao
+nepromijenjen (True).
+Moguće je i višestruko pridruživanje u jednoj naredbi, pri čemu vrijednosti mogu biti
+potpuno različitog tipa, npr:'''
+d, e, f = 3, 4.5, 'ime'
+
+
+#Osnovni aritmetički izrazi
+#**************************
+'''Python u svom interaktivnom ("Shell") sučelju omogućuje računanje aritmetičkih
+izraza poput velikog kalkulatora:
+>>> 1 + 3 * 4 / 5 - 9 % 3
+3.4
+pri čemu može računati sa svim vrijednostima koje su prethodno bile pridružene
+određenim varijablama:
+>>> cijeli_broj * c
+1.2345678901234568e+29
+
+Ukoliko se ne koriste okrugle zagrade, vrijednost izraza izračunava se prema
+prioritetima aritmetičkih operatora, pri čemu se operacije istog prioriteta
+obavljaju s lijeva na desno:
+1. **          potenciranje
+2. -           negacija
+3. *, /, //, % množenje, dijeljenje, cjelobrojno dijeljenje, ostatak
+4. +, -        zbrajanje, oduzimanje
+
+Obično dijeljenje rezultira u Pythonu uvijek float tipom podatka:
+>>> 6 / 2
+3.0
+
+tek cjelobrojno dijeljene dva integera rezultira integerom
+>>> 5 // 3
+1
+dok je ostatak cjelobrojnog dijeljenja
+>>> 5 % 3
+2
+
+Često se umjesto punih izraza koriste skraćeni, pogotovo kada se varijabla nalazi
+s lijeve i desne strane znaka pridruživanja. Tako se umjesto
+a = a + 1 koristi a += 1;
+Analogno:
+a = a * (b + 3 )  ->  a *= b + 3
+a = a / 0.5       ->  a /= 0.5
+a = a ** 2        ->  a **= 2
+a = a % 4         ->  a %= 4
+
+'''
+#Relacijski i logički izrazi
+#***************************
+'''Potrebni su nam za donošenje odluka u programima. Relacijski operatori ili
+operatori usporedbe su:
+>, <, >=, <=, ==, !=
+(veće, manje, veće ili jednako, manje ili jednako, jednako, različito od)
+
+Logički operatori su "and", "or" i "not", a služe nam uglavnom za sastavljanje složenih
+logičkih sudova.
+"and" vraća True samo ako su oba podizraza istinita, u suprotnom vraća False
+"or" vraća True ukoliko je bilo koji od podizraza istinit
+"not" negira vrijednost izraza, dakle True pretvara u False i obratno.
+Logički sudovi, bili jednostavni ili složeni, rješavaju se isključivo kao True ili False
+Na primjer:
+>>> a, b, c = 2, 4, 6
+>>> a < b and b < c + 3 or not c
+True
+U složenim izrazima najprije se rješavaju aritmetički izrazi, zatim izrazi
+usporedbe i na kraju logički
+'''
+
+#Formatirani ispis i upis
+#************************
+'''Ugrađenom funkcijom print() moguće je ispisati varijable i stringove u željenom
+formatu. Na primjer:
+>>> a = 1; b = 2
+print("Zbroj ", a, "i", b, "daje", a + b)
+Zbroj  1 i 2 daje 3
+
+može se elegantnije (i programerski profesionalnije) napisati kao:
+>>> print("Zbroj {0} i {1} daje {2}".format(a, b, a + b))
+Zbroj 1 i 2 daje 3
+
+Redne brojeve u vitičastim zagradama možemo izostaviti, a preciznost ispisa
+možemo dodatno definirati zadajući broj znakova kojim će se određena varijabla
+prikazati. Na primjer:
+>>> x = 5.2; y = 6.35; z = 8
+>>> print('x + y + z = {:.2f} + {:.2f} + {:.2f} = {:.4f}'.format(x, y, z, x + y + z))
+x + y + z = 5.20 + 6.35 + 8.00 =  19.5500
+Primijetite da je varijabla z, inače integer, ispisana kao float. Pokušaj da se float
+podatak ispiše kao integer (pomoću {:d}) rezultirao bi greškom, ukoliko se ne primjeni i
+eksplicitna promjena tipa podatka :
+
+print('x + y + z = {:.0f} + {:.0f} + {:.0f} = {:d}'.format(x, y, z, int(x + y + z)))
+x + y + z = 5 + 6 + 8 = 19
+
+Upis podataka također je moguće formatirati - treba imati u vidu da svaki upis
+pomoću tastature i funkcije input() biva najprije unesen kao string podatak, koji se
+kasnije pomoću drugih funkcija pretvara u tip podatka koji nam je potreban. Npr:'''
+n = int(input("Unesite zbroj {} i {}:".format(5,7)))
+'''funkcija input() najprije učitava string koji je poslan putem tastature u trenutku kada
+je korisnik pritisnuo tipku enter. Ako je sadržaj tog stringa (skupa znakova) nešto što se
+može interpretirati kao cijeli broj, tada će funkcija int() vratiti cjelobrojnu
+reprezentaciju ulaznog stringa i pridružiti varijabli n, u suprotnom program će prijaviti
+grešku.
+
+
+'''
+
+#Struktura programa
+#******************
+'''Najjednostavniju strukturu programa čine naredbe koje se nižu jedna za drugom i tako
+čine blok naredbi. Pozicija početka naredbe određuje pripadanje određenom bloku,
+u suprotnom se javlja sintaktička greška (unexpected indent) ili, što je ponekad
+puno teže uočiti, logička pogreška!
+Izbor alternativnih blokova donosi nam naredba "if", koja se može kombinirati s ključnim
+riječima "else" i "elif". Blok koji će se izvršiti ukoliko je uvjet istinit najavljuje se
+dvotočkom, nakon čega treba uvući u desno (preporučljivo za 4 znaka) naredbe koje
+slijede i pripadaju istom bloku, kao u slijedećem primjeru '''
+brojac = 0
+if n == 12:
+    print('Odgovorili ste točno.')
+    brojac += 1
+elif n == 0:
+    print('Nula je rezervirani znak za kraj programa!')
+else:
+    print('Odgovorili ste netočno.')
+          
+print('Broj točnih odgovora je ', brojac)
+
+'''U if-elif-else strukturi izvršava se samo jedan blok, onaj čiji uvjet prvi bude
+zadovoljen - ostali blokovi u strukturi se preskaču.
+Slijedeći kratki primjer učitava tri broja i ispisuje ih po veličini koristeći
+mogućnost zamjene varijabli'''
+a, b, c = float(input('Unesite tri realna broja\na = ')), float(input('b = ')), float(input('c = '))
+if a > b:
+    a, b = b, a
+if a > c:
+    a, c = c, a
+if b > c:
+    b, c = c, b
+print("Brojevi poredani po veličini su: {}, {}, {}".format(a,b,c))
+
+'''Jednu od najmoćnijih struktura predstavljaju naredbe koje omogućavaju ponavljanje
+određenog bloka naredbi - tzv. petlje. U Pythonu razlikujemo dvije osnovne petlje, "for"
+i "while". Kada nam je broj ponavljanja (iteracija) poznat, odnosno kada ga možemo unaprijed
+izračunati, primjereno je upotrijebiti "for" petlju. Kada je ponavljanje nekog bloka
+uvjetovano akcijom korisnika ili nepredvidljivim ishodom nekog izračuna, ili nam je
+algoritam koji koristimo takve prirode da nam je jednostavnije postaviti uvjet za
+ponavljanje od izračunavanja unaprijed poznatog broja koraka, koristimo petlju "while".'''
+
+print('Primjeri for petlje')
+for i in range(8):
+    print('--------{}'.format((i+1)*10), end = '')
+print()
+    
+rijec = 'Abrakadabra'; br_a = 0
+for slovo in rijec:
+    if slovo.upper() == 'A':
+        br_a += 1
+print('U rijeci \'{}\' nalazi se {} slova a.'.format(rijec, br_a))
+
+'''U gornjim primjerima varijabla iza ključne riječi "for" (i, slovo) poprima niz vrijednosti
+tzv. iterabilnog elementa koji dolazi iza ključne riječi "in" - to mogu biti vrijednosti koje
+generira funkcija range() ili vrijednosti koje se nalaze u nekoj vrsti liste vrijednosti
+(u gornjem primjeru varijabla rijec se moze promatrati kao niz znakova, a varijabla slovo će
+poprimiti u svakoj iteraciji vrijednost novog znaka iz niza, uvećanog pomoću metode upper().
+'''
+print('Primjeri while petlje')
+uvjet = False
+while not uvjet:
+    k = 0
+    unos = input('Unesite cijeli broj: ')
+    for znak in unos:
+        if znak < '0' or znak > '9':
+            k += 1
+    if k == 0:
+        uvjet = True
+a = int(unos)
+while a != '0':
+    a = input('Unesite 0 za izlaz iz petlje ')
+print('Hvala')
+
+#Podatkovne zbirke
+#*****************
+''' Osim osnovnih tipova podataka, Python nudi organiziranje podataka u određene podatkovne
+strukture, od kojih svaka nudi neke posebne pogodnosti:
+
+stringovi - ako ih promatramo kao niz znakova od kojih svaki ima svoje mjesto, odnosno indeks
+            pomoću kojeg je moguće dohvatiti bilo koji znak iz niza.'''
+recenica = 'Ovo je string ali i niz znakova!'
+print('Rečenica:', recenica)
+print('Peti znak u rečenici nalazi se pod indeksom 4 i to je slovo: ', recenica[4])
+
+'''sadržaj stringa je nepromjenjiv, ali se stringovi mogu odsjecati i kombinirati u nove
+stringove. Također, nad stringovima vrijede operatori +, *, in, not in '''
+nova_recenica = recenica[0:7] + 'nova rečenica' + '!' * 3
+if 'nova' in nova_recenica:
+    print(nova_recenica)
+'''
+Ugrađene funkcije za stringove
+(preuzeto iz knjige Budin i ostali: Rješavanje problema programiranjem u Pythonu):
+len(s)- vraća duljinu string
+min(s)- vraća znak s najmanjom kodnom vrijednošću
+max(s)- vraća znak s najvećom kodnom vrijednošću
+ord(s)- vraća dekadni kod pojedinog znaka
+chr(s)- vraća znak pojedinog dekadnog koda
+str(n)- vraća znakovni prikaz broja n
+
+neke od metoda nad stringovima:
+s.lower() - vraća kopiju stringa s sa svim malim slovima
+s.upper() - vraća kopiju stringa s sa svim velikim slovima
+s.index(s1) - vraća poziciju prvog pojavljivanja stringa s1 u stringu s
+****************************************************************************************
+tupple ili n-torka - omogućuje stvaranje grupe podataka različitog tipa,
+                    posebno pogodno za vraćanje više vrijednosti odjednom iz funkcije'''
+kolicnik, ostatak = divmod(15, 4)
+print('Tupple ili n-torka', (kolicnik, ostatak))
+'''****************************************************************************************
+liste - vrlo korisne zbirke koje omogućuju grupiranje srodnih podataka pod jednim imenom
+        te dohvaćanje po indeksu. Često se za kreiranje liste koristi for petlja.
+        Funkcija list() pretvara strin u listu. '''
+
+radni_dani = ['ponedjeljak', 'utorak', 'srijeda', 'četvrtak', 'petak']
+sijecanj = [i+1 for i in range(31)]
+engl_abeceda = [chr(i) for i in range(ord('a'), ord('z')+1)]
+hrv_abeceda = list('abcčćdđ') + ['dž'] + list('efghijkl') + ['lj', 'm', 'n', 'nj'] \
+              + list('oprsštuvzž')
+print('Hrvatska abeceda')
+for slovo in hrv_abeceda:
+	print('{}'.format(slovo), end = ' ')
+print()
+
+'ispravno kopiranje liste'
+ozujak = sijecanj[:]
+
+
+'''operatori, metode i ugrađene funkcije nad listama
+    (preuzeto iz knjige Budin i ostali: Rješavanje problema programiranjem u Pythonu):
+operatori: +, *, in, not in - isto kao nad stringovima
+
+metode:    
+lista.append(x) - dodaje element x na kraj liste "lista"
+lista.extend(lista2) - dodaje elemente liste "lista2" na kraj liste "lista"
+lista.insert(i, x) - umeće element x prije i-tog elementa liste
+lista.remove(x) - izbacuje prvu pojavu elementa x iz liste
+lista.pop([i]) - izbacuje i-ti element iz liste i vraća njegovu vrijednost.
+                 ako i nije specificiran, izbacuje element s najvećim indeksom (zadnji)
+lista.reverse() - okreće redoslijed elemenata liste
+lista.sort - sortira listu prema rastućim vrijednostima elemenata liste
+
+ugrađene funkcije:
+len(lista) - vraća duljinu liste (broj elemenata)
+min(lista) - vraća najmanju vrijednost liste
+max(lista) - vraća najveću vrijednost liste
+****************************************************************************************
+set ili skup - podatkovna zbirka u kojoj se neka vrijednost može pojaviti samo jednom
+               elemente skupa pišemo unutar vitičastih zagrada
+               osnovne funkcije nad skupovima iste su kao kod stringa i listi
+               prazan skup definira se funckijom set(), a istom funkcijom moguće je string ili
+               listu pretvoriti u skup
+               nad skupovima vrijede skupovni operatori:
+               | - unija
+               & - presjek
+               - - razlika
+               ^ - simetrična razlika
+               in - element skupa
+               not in - nije element skupa
+               <, <= - podskup
+               >. >= - nadskup
+               != - različito
+               == - jednako
+               (preuzeto iz knjige Budin i ostali: Rješavanje problema programiranjem u Pythonu)
+'''
+radni_dani = {'ponedjeljak', 'utorak', 'srijeda', 'četvrtak', 'petak'}
+neradni = {'subota', 'nedjelja'}
+print("Skup dani u tjednu: ", radni_dani | neradni)
+set_samoglasnika = set('Nadam se da u ovom stringu ima svih samoglasnika') & {'a', 'e', 'i', 'o', 'u'}
+print("Set samoglasnika", set_samoglasnika)
+'''
+***********************************************************************************************
+rječnik - podatkovna zbirka slična listi, no umjesto pomoću indeksa, element liste moguće je
+          dohvatiti pomoću ključa (koji opet može biti bilo što - brojevi, slova, riječi)
+          elementi rječnika upisuju se između vitičastih zagrada kao par ključ : vrijednost
+          (pri čemu vrijednost može također biti neka druga podatkovna zbirka)
+'''
+ocjene = {1:'nedovoljan', 2:'dovoljan', 3:'dobar', 4:'vrlo dobar', 5:'izvrstan'}
+grades = {'A':5, 'B':4, 'C':3, 'D':2, 'F':1}
+a = input('Unesite slovčanu ocjenu (A-F): ')
+print('Unijeli ste ocjenu', ocjene[grades[a]])
+
+'''
+Operatori, funkcije i metode nad rječnicima
+               (preuzeto iz knjige Budin i ostali: Rješavanje problema programiranjem u Pythonu)
+
+        len(d) - vraća broj svih elemenata sadržanih u rječniku d
+        d[k] - vraća vrijednost koja pripada ključu k
+        del(d[k]) - briše ključ k i njemu pripadnu vrijednost
+        k in d - vraća True ako se ključ k nalazi u rječniku d
+        k not in d - vraća True ako se ključ ne nalazi u rječniku d
+
+        d.keys() - vraća listu svih ključeva
+        d.values() - vraća listu svih vrijednosti
+        d.items() - vraća listu parova (ključ, vrijednost)
+        d.update(drugi) - dodaje rječniku d rječnik drugi; za one ključeve koji već postoje
+                          u d prepisuju se vrijednosti iz drugi
+        d.get(k) - vraća vrijednost d[k]; ako ključ ne postoji u rječniku, vraća None
+        d.clear - briše sve elemente iz rječnika (ostaje prazan rječnik)
+************************************************************************************************
+datoteke - služe za trajnu pohranu svih vrsta informacija na računalu. Također, omogućuju razmjenu
+           podataka među različitim programima.
+           U gradivu smo razmatrali znakovne datoteke - njih možemo promatrati string proizvoljne
+           veličine, koje možemo obrađivati posebnim metodama za datoteke. Općenito govoreći, iz
+           datoteke čitamo podatke ili ih pak u nju upisujemo. Pristup datotekama ostvaruje se
+           korištenjem datotečnog podsustava operacijskog sustava, a početna veza s datotekom
+           ostvaruje se funkcijom "open", općeg oblika
+           
+                        open(ime funkcije, način_uporabe)
+                        
+           ime funkcije treba sadržavati kompletnu putanju do datoke, dok je način uporabe jedan
+           od slijedećih:
+           'r' - datoteka se otvara za čitanje (ako ne postoji, javlja grešku)
+           'w' - datoteka se otvara za pisanje (ako postoji, njen se sadržaj prepisuje)
+           'a' - datoteka se otvara za dodavanje (metodom write dodaju se novi podaci na kraj datoteke)
+
+           Nakon uporabe, datoteku je potrebno zatvoriti pomoću metode close() (podaci neće biti
+           spremljeni u datoteku na disku ukoliko to ne učinimo)
+           Neke od ostalih metoda nad datotekama:
+           (preuzeto iz knjige Budin i ostali: Rješavanje problema programiranjem u Pythonu)
+           f.read() - cijeli sadržaj datoteke f pročita se i vraća kao jedan string
+           f.readline() - čita cijeli redak iz datoteke f(do znaka\n)- kada dođe do kraja datoteke
+                          vraća prazan string
+           f.readlines() - datoteka f se čita po redcima i vraća se lista stringova pojedinih redaka
+           f.seek(n) - pokazivač se postavlja na položaj n (vraćanje na početak: f.seek(0))
+           f.tell() - vraća trenutni položaj pokazivača
+           f.write(s) - smješta string s u datoteku (ako je otvorena za pisanje, briše se prethodni
+                        sadržaj, ako je otvorena za dodavanje, string se dodaje na kraj
+
+
+ime_dat = 'C:\\Users\\bnozica\\MyPython\\polinomi'
+file = open(ime_dat, 'r')
+print("Sadržaj datoteke 'polinomi'\n", file.read())
+file.close()
+'''
+
+#Funkcije i moduli
+##################
+'''Razlaganje programa na manje logičke cjeline (funkcije) predstavlja ključ pisanja čitljivih
+programa koji se uz to i lako održavaju. Python dolazi s mnogim ugrađenim funkcijama i metodama
+za određene tipove podatka, od kojih su neke dostupne uvijek, dok se druge nalaze u tzv.
+modulima i moraju se uvesti pomoću naredbe import. Kada stvaramo vlastite funkcije, također ih
+možemo grupirati i spremati u vlastite module.
+'''
+from random import *; 'uvoz svih funkcija modula random'
+import sys; '''uvoz modula sys. Nakon toga određenu funkciju treba pozvati pomoću
+            imena modula i točke (npr. sys.path)''' 
+'''
+
+Važno je shvatiti prirodu komunikacije s funkcijama. Sve varijable navedene u funkcijama lokalne
+su za tu funkciju i nemaju nikakve veze s varijablama istog imena u drugim funkcijama.
+Izuzetak su varijable koje su definirane izvan bilo koje funkcije i nalaze se u programu napisane
+prije naše funkcije - to su tzv. globalne varijable i u pravilu ih treba izbjegavati u našim
+programima.
+Sva komunikacija s funkcijama odvija se preko poziva funkcije imenom, predajom eventualnih
+ulaznih parametara funkciji i prihvaćanjem rezultata ukoliko ga funkcija vraća!!!
+
+Preporučljivo je naredbe glavnog programa grupirati u funkciju naziva main() - u tom slučaju
+glavni program sastoji se samo od poziva funkcije main().
+
+'''
+
+
+    #prilagodite putanju za datoteku svom računalu, a zatim otkomentirajte kod
+'''
+def main():
+    ime_dat = 'C:\\Users\\bnozica\\MyPython\\polinomi'
+    file = open(ime_dat, 'w')
+    kraj = 0
+    while not kraj:
+        p = ucitaj_polinom()
+        if p > []:
+            ispisi_polinom(p)
+            zapisi_u_datoteku(file, p)
+        else:
+            kraj = 1
+            file.close()
+
+
+
+def ucitaj_polinom():
+    kraj = 0
+    while not kraj:
+        p = []
+        s = int(input('Unesite stupanj polinoma (<= 10), 0 za kraj '))
+        if s == 0:
+            kraj = 1
+        elif s > 10:
+            print('Pogrešan unos!')
+        else:
+            for m in range(s,-1,-1):
+                print('Unesite koeficijent uz stupanj ', m, end = '-> ')
+                p += [int(input())]
+            kraj = 1
+    return p
+
+def ispisi_polinom(p):
+    print('\nPolinom:')
+    n = len(p); i = 0
+    while i < n:
+        if p[i] == 0:
+            'koeficijent je 0 pa se preskače ispis i ide na novi član'
+            i += 1
+            continue
+        if i > 0 and p[i] > 0:
+            'ispisuje "+" nakon prvog monoma ako je koeficijent > 0'
+            print(' + ', end = '')
+        elif p[i] == -1:
+            'ispisuje "-" ako je koeficijent = -1 (jedinica se ne ispisuje)' 
+            print(' - ', end = '')    
+        if n - i > 2:
+            'ako je potencija 2 ili više ispisuje ju, a koeficijente samo ako'
+            'su različiti od 1 ili -1'
+            print('{}x**{} '.format(p[i]if abs(p[i]) != 1 else '', n-1-i), end = '')
+        elif n - i == 2:
+            'ispis koeficijenta uz monom prvog stupnja'
+            print('{}x'.format(p[i]if abs(p[i]) != 1 else ''),end = '')
+        else:
+            'ispis slobodnog člana ako postoji'
+            print(p[i], end = '')
+        i += 1
+    'na kraju prijelaz u novi red'
+    print()
+
+def zapisi_u_datoteku(dat,polinom):
+    'koeficijenti polinoma se zapisuju u obrnutom redoslijedu'
+    polinom = polinom[len(polinom)::-1]
+    koeficijenti = ''
+    for k in polinom:
+        koeficijenti += str(k) + ' '
+    dat.write(koeficijenti + '\n')
+    
+main()
+
+'''
+'''Program koji simulira izvlačenje karata iz zadanog broja špilova
+
+i prepoznaje u izvučenim kartama parove, tris ili poker'''
+
+
+
+from random import *
+
+#oznake karata koje želimo u igri
+
+KARTE = ['7', '8', '9', '10', 'J', 'Q', 'K', 'A']
+
+#unicode kodovi za simbole karata ['♠', '♥', '♦', '♣']
+
+BOJE = [u"\u2660", u"\u2665",u"\u2666", u"\u2663"]
+
+
+
+
+
+def spil_karata():
+
+    spil = []
+
+    for boja in BOJE:
+
+        for karta in KARTE:
+
+            spil.append(karta + boja)
+
+    return spil
+
+        
+
+def generiraj_sve_karte(broj_spilova):
+
+    sve_karte = []   
+
+    for _ in range(broj_spilova):
+
+        sve_karte += spil_karata()
+
+    shuffle(sve_karte)  
+
+    return sve_karte
+
+
+
+def racunaj(hand):
+
+    karte = {k:0 for k in KARTE}
+
+    for k in karte:
+
+        for karta in hand:
+
+            if k in karta:
+
+                karte[k] += 1
+
+    hand = []
+
+    for k in karte:
+
+        if karte[k] == 2:
+
+            hand.append('par(' + k + ')')
+
+        elif karte[k] == 3:
+
+            hand.append('tris('+ k + ')')
+
+        elif karte[k] >= 4:
+
+            hand.append('poker('+ k + ')')
+
+    return hand
+
+
+
+def main():
+
+    broj_spilova = 2
+    broj_izvucenih_karata = 5
+    broj_izvlacenja = 10
+    sve_karte = generiraj_sve_karte(broj_spilova)
+
+    print('Generirane karte:\n', sve_karte, '\n')
+
+    for i in range(broj_izvlacenja):
+
+        print(i+1, end = '\t')
+
+        hand = []
+
+        for _ in range(broj_izvucenih_karata):
+
+            karta = sve_karte.pop()
+
+            print('{:4s}'.format(karta), end = ' ')
+
+            hand.append(karta)
+
+        hand = racunaj(hand)
+
+        print('\t',hand)
+
+
+
+main()
+
+            
+                 
+    
+
+
+
+
+
+
+
